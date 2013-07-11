@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+       <title>Rat Hunter</title>
+       <meta charset="UTF-8" />
+       <style>
+               canvas {
+                      border: 2px solid black;
+               }
+
+               #centerCanvas {
+                      width: 800px;
+                      margin-left: auto;
+                      margin-right: auto;
+               }
+
+              #title {
+                      font-size: 25px;
+                      font-weight: bold;
+                      font-style: italic;
+                      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+                      width: 800px;
+                      margin-left: auto;
+                      margin-right: auto;
+             }	      
+       </style>
+    <script>
+
+          var environment;
+
+          function init() {
+          var canvas = document.getElementById("canvas");
+
+          if (canvas.getContext) {
+              ctx = canvas.getContext("2d");
+               
+              environment = {
+                 drawBackground: function () {
+                    mapBackground = new Image();
+                    mapBackground.src = "imgs/mapBackground.png";
+                    ctx.drawImage(mapBackground, canvas.width / 2, canvas.height / 2);
+                  }
+              };		      
+	
+             }
+            }
+
+
+    </script>
+    </head>
+    <body onload="init();">
+     
+       <div id="title" align="center">
+       Rat Hunter
+       </div>
+
+       <div id="centerCanvas">    
+       <canvas id="canvas" width="800" height="600"></canvas>
+       </div>
+
+    </body>
+</html>

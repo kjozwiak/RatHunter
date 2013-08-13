@@ -3,27 +3,9 @@
   <head>
     <title>Rat Hunter</title>
     <meta charset="UTF-8" />
-    <style>
-      canvas {
-        border: 2px solid black;
-      }
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="modernizr.js"></script>
 
-      #centerCanvas {
-        width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      #title {
-        font-size: 25px;
-        font-weight: bold;
-        font-style: italic;
-        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-        width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-    </style>
     <script>
       var tilesheet = new Image();
       tilesheet.src = "imgs/tilesheet.png";
@@ -41,7 +23,7 @@
       function init() {
         var canvas = document.getElementById("canvas");
 
-        if (canvas.getContext) {
+        if (Modernizr.canvas) {
           ctx = canvas.getContext("2d");
           requestAnimationFrame(mainDraw);
 
@@ -90,6 +72,8 @@
           entireElements = [
             map
           ];
+        } else {
+          document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser");
         }
       };
     </script>

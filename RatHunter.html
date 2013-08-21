@@ -13,7 +13,11 @@
       var map;
       var entireElements;
 
-      function mainDraw () {
+      function canvasSupport() {
+        return Modernizr.canvas;
+      }
+
+      function mainDraw() {
         requestAnimationFrame(mainDraw);
           entireElements.forEach(function(element) {
           element.draw()
@@ -21,14 +25,16 @@
       }
 
       function init() {
-        var canvas = document.getElementById("canvas");
 
-        if (Modernizr.canvas) {
+        if (!canvasSupport()) {
+          document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser");
+        } else {
+          var canvas = document.getElementById("canvas");
           ctx = canvas.getContext("2d");
           requestAnimationFrame(mainDraw);
 
           map = {
-            draw: function () {
+            draw: function() {
 
               var indexOffset = -1;
               var mapRows = 20;
@@ -72,8 +78,6 @@
           entireElements = [
             map
           ];
-        } else {
-          document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser");
         }
       };
     </script>

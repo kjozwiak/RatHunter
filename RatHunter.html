@@ -7,11 +7,15 @@
     <script src="modernizr.js"></script>
 
     <script>
-      var tilesheet = new Image();
-      tilesheet.src = "imgs/tilesheet.png";
+      var mainTilesheet = new Image();
+      mainTilesheet.src = "imgs/tilesheet.png";
+
+      var firefoxTilesheet = new Image();
+      firefoxTilesheet.src = "imgs/firefox.png";
 
       var map;
-      var entireElements;
+      var firefox;
+      var allElements;
 
       function canvasSupport() {
         return Modernizr.canvas;
@@ -19,7 +23,7 @@
 
       function mainDraw() {
         requestAnimationFrame(mainDraw);
-          entireElements.forEach(function(element) {
+          allElements.forEach(function(element) {
           element.draw()
         });
       }
@@ -69,11 +73,17 @@
                   var tileId = tileMap [rowCtr][colCtr] + indexOffset;
                   var sourceX = Math.floor(tileId % 30) *32;
                   var sourceY = Math.floor(tileId / 30) *32;
-                  ctx.drawImage(tilesheet, sourceX, sourceY, 32, 32, colCtr * 32, rowCtr * 32, 32, 32);
+                  ctx.drawImage(mainTilesheet, sourceX, sourceY, 32, 32, colCtr * 32, rowCtr * 32, 32, 32);
                 }
               }
             }
           }
+
+          firefox = {
+            movingUpdraw: function() {
+
+            }
+          };
 
           entireElements = [
             map

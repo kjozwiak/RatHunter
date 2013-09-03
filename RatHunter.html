@@ -106,14 +106,14 @@
 
                   // draws the background grass (first layer)
                   var tileID = grass[r][c] + indexOffset;
-                  var sourceX = ((tileID % numberRowTiles) | 0) * tileSize; // Bitwise OR operation (same as Math.floor() but faster)
-                  var sourceY = ((tileID / numberRowTiles) | 0) * tileSize; // Bitwise OR operation (same as Math.floor() but faster)
+                  var sourceX = Math.floor(tileID % numberRowTiles) * tileSize;
+                  var sourceY = Math.floor(tileID / numberRowTiles) * tileSize;
                   ctx.drawImage(mapTilesheet, sourceX, sourceY, tileSize, tileSize, c * tileSize, r * tileSize, tileSize, tileSize);
 
                   // draws the objects on the background (second layer)
                   tileID = objects[r][c] + indexOffset;
-                  sourceX = ((tileID % numberRowTiles) | 0) * tileSize; // Bitwise OR operation (same as Math.floor() but faster)
-                  sourceY = ((tileID / numberRowTiles) | 0) * tileSize; // Bitwise OR operation (same as Math.floor() but faster)
+                  sourceX = Math.floor(tileID % numberRowTiles)  * tileSize;
+                  sourceY = Math.floor(tileID / numberRowTiles) * tileSize;
                   ctx.drawImage(mapTilesheet, sourceX, sourceY, tileSize, tileSize, c * tileSize, r * tileSize, tileSize, tileSize);
                 }
               }

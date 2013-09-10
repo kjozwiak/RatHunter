@@ -14,8 +14,6 @@
       var firefoxTilesheet = new Image();
       firefoxTilesheet.src = "imgs/firefox.png";
 
-      var indexOffset = -1;
-      var tileSize = 32;
       var tileMap;
       var firefoxCharacter;
       var firefoxFrameIndex = 0;
@@ -43,6 +41,8 @@
 
           tileMap = {
             draw: function() {
+              var indexOffset = -1;
+              var tileSize = 32;
               var mapRows = 24;
               var mapCols = 32;
               var numberRowTiles = 30;

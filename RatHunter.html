@@ -14,8 +14,8 @@
       var firefoxTilesheet = new Image();
       firefoxTilesheet.src = "imgs/firefox.png";
 
-      var tileMap;
-      var firefoxCharacter;
+      var TileMap;
+      var FirefoxCharacter;
       var firefoxFrameIndex = 0;
       var allElements;
 
@@ -25,13 +25,126 @@
 
       function mainDraw() {
         requestAnimationFrame(mainDraw);
-          allElements.forEach(function(element) {
+          AllElements.forEach(function(element) {
           element.draw()
         });
       }
 
-      function init() {
+      var keys = {
+        up: 38,
+        left: 37,
+        right: 39,
+        down: 40
+      };
 
+      var TileMap = {
+        draw: function() {
+          var indexOffset = -1;
+          var tileSize = 32;
+          var mapRows = 24;
+          var mapCols = 32;
+          var numberRowTiles = 30;
+
+          //the following arrays can be found under mapBackground.js
+          for (var r = 0; r < mapRows; r++) {
+            for (var c = 0; c < mapCols; c++) {
+
+              // draws the background grass (first layer)
+              var tileID = grassTilemap[r][c] + indexOffset;
+              var sourceX = Math.floor(tileID % numberRowTiles) * tileSize;
+              var sourceY = Math.floor(tileID / numberRowTiles) * tileSize;
+              ctx.drawImage(mapTilesheet, sourceX, sourceY, tileSize, tileSize, c * tileSize, r * tileSize, tileSize, tileSize);
+
+              // draws the objects on the background (second layer)
+              tileID = objectsTilemap[r][c] + indexOffset;
+              sourceX = Math.floor(tileID % numberRowTiles)  * tileSize;
+              sourceY = Math.floor(tileID / numberRowTiles) * tileSize;
+              ctx.drawImage(mapTilesheet, sourceX, sourceY, tileSize, tileSize, c * tileSize, r * tileSize, tileSize, tileSize);
+            }
+          }
+        }
+      };
+
+      var FirefoxCharacter = {
+        x: 0,
+        y: 0,
+        speed: 0,
+        defaultSpeed: 10,
+        directions: {
+          right: 0,
+          left: 32,
+          up: 64,
+          down: 96
+        },
+        currentDirection: 0,
+        imageIndex: 0,
+        lastDrawTime: 0,
+        draw: function() {
+          var currentTime = new Date().getTime();
+          if (currentTime - this.lastDrawTime > 200 && this.speed > 0) {
+            this.imageIndex++;
+            this.lastDrawTime = new Date().getTime();
+            if (this.imageIndex > 4) {
+              this.imageIndex = 0;
+            }
+          }
+          ctx.drawImage(firefoxTilesheet, this.imageIndex * 32, this.currentDirection, 32, 32, this.x, this.y, 70, 70);
+        },
+        moveUp: function() {
+          this.y-=this.speed;
+          this.speed = this.defaultSpeed;
+          this.currentDirection = this.directions.up;
+        },
+        moveLeft: function() {
+          this.x-=this.speed;
+          this.speed = this.defaultSpeed;
+          this.currentDirection = this.directions.left;
+        },
+        moveRight: function() {
+          this.x+=this.speed;
+          this.speed = this.defaultSpeed;
+          this.currentDirection = this.directions.right;
+        },
+        moveDown: function() {
+          this.y+=this.speed;
+          this.speed = this.defaultSpeed;
+          this.currentDirection = this.directions.down;
+        },
+        stop: function() {
+          this.speed = 0;
+          this.imageIndex = 4;
+        }
+      };
+
+      var controlCharacter = FirefoxCharacter; //current controllable character
+
+      function keyDown(aEvent) {
+        switch(aEvent.keyCode) {
+          case keys.up:
+            controlCharacter.moveUp();
+            break;
+          case keys.left:
+            controlCharacter.moveLeft();
+            break;
+          case keys.right:
+            controlCharacter.moveRight();
+            break;
+          case keys.down:
+            controlCharacter.moveDown();
+            break;
+        }
+      }
+
+      function keyUp(aEvent) {
+        controlCharacter.stop();
+      }
+
+      AllElements = [
+        TileMap,
+        FirefoxCharacter
+      ];
+
+      function init() {
         if (!canvasSupport()) {
           document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser");
         } else {
@@ -39,59 +152,20 @@
           ctx = canvas.getContext("2d");
           requestAnimationFrame(mainDraw);
 
-          tileMap = {
-            draw: function() {
-              var indexOffset = -1;
-              var tileSize = 32;
-              var mapRows = 24;
-              var mapCols = 32;
-              var numberRowTiles = 30;
-
-              //the following arrays can be found under mapBackground.js
-              for (var r = 0; r < mapRows; r++) {
-                for (var c = 0; c < mapCols; c++) {
-
-                  // draws the background grass (first layer)
-                  var tileID = grass[r][c] + indexOffset;
-                  var sourceX = Math.floor(tileID % numberRowTiles) * tileSize;
-                  var sourceY = Math.floor(tileID / numberRowTiles) * tileSize;
-                  ctx.drawImage(mapTilesheet, sourceX, sourceY, tileSize, tileSize, c * tileSize, r * tileSize, tileSize, tileSize);
-
-                  // draws the objects on the background (second layer)
-                  tileID = objects[r][c] + indexOffset;
-                  sourceX = Math.floor(tileID % numberRowTiles)  * tileSize;
-                  sourceY = Math.floor(tileID / numberRowTiles) * tileSize;
-                  ctx.drawImage(mapTilesheet, sourceX, sourceY, tileSize, tileSize, c * tileSize, r * tileSize, tileSize, tileSize);
-                }
-              }
-
-            }
-          }
-
-          firefoxCharacter = {
-            draw: function() {
-              ctx.drawImage(firefoxTilesheet, 0, 32, 32, 32, 0, 0, 70, 70);
-            }
-          }
-
-          allElements = [
-            tileMap,
-            firefoxCharacter
-          ];
-
+          window.onkeydown = keyDown;
+          window.onkeyup = keyUp;
         }
       };
     </script>
   </head>
 
-    <body onload="init();">
+  <body onload="init();">
+    <div id="title" align="center">
+      Rat Hunter
+    </div>
 
-      <div id="title" align="center">
-        Rat Hunter
-      </div>
-
-      <div id="centerCanvas">
-        <canvas id="canvas" width="1024" height="768"></canvas>
-      </div>
-    </body>
+    <div id="centerCanvas">
+      <canvas id="canvas" width="1024" height="768"></canvas>
+    </div>
+  </body>
 </html>

@@ -18,6 +18,7 @@
       var FirefoxCharacter;
       var firefoxFrameIndex = 0;
       var allElements;
+      var GameSounds;
 
       function canvasSupport() {
         return Modernizr.canvas;
@@ -116,7 +117,18 @@
         }
       };
 
+      var GameSounds = {
+        backgroundMusic: new Audio("sounds/backgroundMusic.ogg"),
+      };
+
+      AllElements = [
+        TileMap,
+        FirefoxCharacter
+      ];
+
       var controlCharacter = FirefoxCharacter; //current controllable character
+      GameSounds.backgroundMusic.loop = true;
+      GameSounds.backgroundMusic.play();
 
       function keyDown(aEvent) {
         switch(aEvent.keyCode) {
@@ -138,11 +150,6 @@
       function keyUp(aEvent) {
         controlCharacter.stop();
       }
-
-      AllElements = [
-        TileMap,
-        FirefoxCharacter
-      ];
 
       function init() {
         if (!canvasSupport()) {

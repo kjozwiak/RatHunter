@@ -14,6 +14,7 @@
       var firefoxTilesheet = new Image();
       firefoxTilesheet.src = "imgs/firefox.png";
 
+      var controlCharacter;
       var TileMap;
       var FirefoxCharacter;
       var firefoxFrameIndex = 0;
@@ -31,7 +32,7 @@
         });
       }
 
-      var keys = {
+      var Keys = {
         up: 38,
         left: 37,
         right: 39,
@@ -118,7 +119,7 @@
       };
 
       var GameSounds = {
-        backgroundMusic: new Audio("sounds/backgroundMusic.ogg"),
+        backgroundMusic: new Audio("sounds/backgroundMusic.ogg")
       };
 
       AllElements = [
@@ -126,22 +127,18 @@
         FirefoxCharacter
       ];
 
-      var controlCharacter = FirefoxCharacter; //current controllable character
-      GameSounds.backgroundMusic.loop = true;
-      GameSounds.backgroundMusic.play();
-
       function keyDown(aEvent) {
         switch(aEvent.keyCode) {
-          case keys.up:
+          case Keys.up:
             controlCharacter.moveUp();
             break;
-          case keys.left:
+          case Keys.left:
             controlCharacter.moveLeft();
             break;
-          case keys.right:
+          case Keys.right:
             controlCharacter.moveRight();
             break;
-          case keys.down:
+          case Keys.down:
             controlCharacter.moveDown();
             break;
         }
@@ -157,10 +154,12 @@
         } else {
           var canvas = document.getElementById("canvas");
           ctx = canvas.getContext("2d");
-          requestAnimationFrame(mainDraw);
-
+          controlCharacter = FirefoxCharacter; // current controllable character
+          GameSounds.backgroundMusic.loop = true;
+          GameSounds.backgroundMusic.play();
           window.onkeydown = keyDown;
           window.onkeyup = keyUp;
+          requestAnimationFrame(mainDraw);
         }
       };
     </script>
